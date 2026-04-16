@@ -42,7 +42,7 @@ class Client(commands.Bot):
 #========================= UI Components =========================
 
     
-    class ChecklistButton(discord.ui.Button):
+class ChecklistButton(discord.ui.Button):
     def __init__(self, item_name: str):
         # Start the button as gray (secondary) with an X
         super().__init__(style=discord.ButtonStyle.secondary, label=item_name, emoji="✖️")
