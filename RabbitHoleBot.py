@@ -45,7 +45,7 @@ class Client(commands.Bot):
 class ChecklistButton(discord.ui.Button):
     def __init__(self, item_name: str):
         # Start the button as gray (secondary) with an X
-        super().__init__(style=discord.ButtonStyle.secondary, label=item_name, emoji="✖️")
+        super().__init__(style=discord.ButtonStyle.secondary, label=item_name, emoji="❌")
         self.item_name = item_name
         self.is_checked = False
 
@@ -58,8 +58,8 @@ class ChecklistButton(discord.ui.Button):
             self.style = discord.ButtonStyle.success # Turns green
             self.emoji = "✅"
         else:
-            self.style = discord.ButtonStyle.secondary # Turns gray
-            self.emoji = "✖️"
+            self.style = discord.ButtonStyle.danger # Turns red
+            self.emoji = "❌"
             
         # Edit the message to reflect the new button state
         await interaction.response.edit_message(view=self.view)
@@ -95,7 +95,7 @@ async def checklistCommand(interaction: discord.Interaction, title: str, items: 
     
     # Discord has a strict limit of 25 buttons per message (5 rows of 5)
     if len(item_list) > 25:
-        await interaction.response.send_message("❌ You can only have up to 25 items in a checklist!", ephemeral=True)
+        await interaction.response.send_message("❌ You can only have up to 25 items in a checklist! (discord has a limit of 25 buttons per message)", ephemeral=True)
         return
     elif len(item_list) == 0:
         await interaction.response.send_message("❌ You must provide at least one item!", ephemeral=True)
