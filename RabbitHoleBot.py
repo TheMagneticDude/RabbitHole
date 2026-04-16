@@ -8,7 +8,7 @@ import os
 #will fill in after to avoid secret being in repo
 botToken = '';
 #grab token from local env variable
-botToken = os.getenv("DISCORD_TOKEN");
+botToken = os.getenv("RABBITHOLE_TOKEN");
 
 GUILD_ID = discord.Object(id=1474226483491897446);
 
