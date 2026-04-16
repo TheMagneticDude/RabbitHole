@@ -45,7 +45,7 @@ class Client(commands.Bot):
 class ChecklistButton(discord.ui.Button):
     def __init__(self, item_name: str):
         # Start the button as red (danger) with an X
-        super().__init__(style=discord.ButtonStyle.danger, label=item_name, emoji="❌")
+        super().__init__(style=discord.ButtonStyle.danger, label=item_name, emoji="✖️")
         self.item_name = item_name
         self.is_checked = False
 
@@ -59,7 +59,7 @@ class ChecklistButton(discord.ui.Button):
             self.emoji = "✅"
         else:
             self.style = discord.ButtonStyle.danger # Turns red
-            self.emoji = "❌"
+            self.emoji = "✖️"
             
         # Edit the message to reflect the new button state
         await interaction.response.edit_message(view=self.view)
