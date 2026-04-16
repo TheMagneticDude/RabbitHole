@@ -44,8 +44,8 @@ class Client(commands.Bot):
     
 class ChecklistButton(discord.ui.Button):
     def __init__(self, item_name: str):
-        # Start the button as gray (secondary) with an X
-        super().__init__(style=discord.ButtonStyle.secondary, label=item_name, emoji="❌")
+        # Start the button as red (danger) with an X
+        super().__init__(style=discord.ButtonStyle.danger, label=item_name, emoji="❌")
         self.item_name = item_name
         self.is_checked = False
 
