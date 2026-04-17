@@ -131,7 +131,7 @@ async def test(interaction: discord.Interaction):
 @client.tree.command(name="checklist", description="Creates an interactive checklist.", guild=GUILD_ID)
 @app_commands.describe(title="The title of the checklist", items="Comma-separated list of items")
 async def checklistCommand(interaction: discord.Interaction, title: str, items: str):
-    
+    await interaction.response.defer()
     # 1. Split the string by commas and strip any accidental extra spaces
     item_list = [item.strip() for item in items.split(",") if item.strip()]
     
@@ -158,7 +158,7 @@ async def checklistCommand(interaction: discord.Interaction, title: str, items: 
 @client.tree.command(name="protectedchecklist", description="Creates checklist that only users with write permissions in the channel can interact with.", guild=GUILD_ID)
 @app_commands.describe(title="The title of the checklist", items="Comma-separated list of items")
 async def protectedchecklistCommand(interaction: discord.Interaction, title: str, items: str):
-    
+    await interaction.response.defer()
     # 1. Split the string by commas and strip any accidental extra spaces
     item_list = [item.strip() for item in items.split(",") if item.strip()]
     
