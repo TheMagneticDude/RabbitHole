@@ -152,7 +152,7 @@ async def checklistCommand(interaction: discord.Interaction, title: str, items: 
     
     # 3. Create our dynamic view and send it!
     view = ChecklistView(item_list)
-    await interaction.response.send_message(embed=embed, view=view)
+    await interaction.followup.send(embed=embed, view=view)
 
 
 @client.tree.command(name="protectedchecklist", description="Creates checklist that only users with write permissions in the channel can interact with.", guild=GUILD_ID)
@@ -179,7 +179,7 @@ async def protectedchecklistCommand(interaction: discord.Interaction, title: str
     
     # 3. Create our dynamic view and send it!
     view = ProtectedChecklistView(item_list)
-    await interaction.response.send_message(embed=embed, view=view)
+    await interaction.followup.send(embed=embed, view=view)
 
 
 
