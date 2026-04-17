@@ -43,7 +43,7 @@ class Client(commands.Bot):
 
     
 class ChecklistButton(discord.ui.Button):
-    def __init__(self, item_name: str):
+    def __init__(self, item_name: str, index: int):
         # We assign a unique custom_id using the index
         button_id = f"checklist_btn_{index}"
         # Start the button as red (danger) with an X
@@ -69,7 +69,7 @@ class ChecklistButton(discord.ui.Button):
         
 #inputs are only accepted from users with write permissions in the channel (for use in announcements channel etc) 
 class ProtectedChecklistButton(discord.ui.Button):
-    def __init__(self, item_name: str):
+    def __init__(self, item_name: str, index: int):
         # We assign a unique custom_id using the index
         button_id = f"protected_checklist_btn_{index}"
         # Start the button as red (danger) with an X
