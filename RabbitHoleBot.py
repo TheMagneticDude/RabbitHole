@@ -151,7 +151,7 @@ async def checklistCommand(interaction: discord.Interaction, title: str, items: 
     await interaction.response.send_message(embed=embed, view=view)
 
 
-@client.tree.command(name="protectedchecklist", description="Creates an interactive checklist that only users with write permissions in the channel can interact with.", guild=GUILD_ID)
+@client.tree.command(name="protectedchecklist", description="Creates checklist that only users with write permissions in the channel can interact with.", guild=GUILD_ID)
 @app_commands.describe(title="The title of the checklist", items="Comma-separated list of items")
 async def protectedchecklistCommand(interaction: discord.Interaction, title: str, items: str):
     
