@@ -103,16 +103,16 @@ class ChecklistView(discord.ui.View):
         super().__init__(timeout=None) # timeout=None prevents the buttons from dying after 3 minutes
         
         # Dynamically create and add a button for every item in the list
-        for item in item_list:
-            self.add_item(ChecklistButton(item))
+        for i, item in enumerate(item_list):
+            self.add_item(ChecklistButton(item, i))
             
 class ProtectedChecklistView(discord.ui.View):
     def __init__(self, item_list: list):
         super().__init__(timeout=None) # timeout=None prevents the buttons from dying after 3 minutes
         
         # Dynamically create and add a protected button for every item in the list
-        for item in item_list:
-            self.add_item(ProtectedChecklistButton(item))
+        for i, item in enumerate(item_list):
+            self.add_item(ProtectedChecklistButton(item, i))
 
 #========================= Init =========================
 intents = discord.Intents.default();
