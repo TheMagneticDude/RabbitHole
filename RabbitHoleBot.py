@@ -78,7 +78,7 @@ class ProtectedChecklistButton(discord.ui.Button):
         channel_perms = interaction.channel.permissions_for(interaction.user);
         #check if user has write permission in the channel
         if not channel_perms.send_messages:
-            await interaction.response.send_message("❌ You must have permission to type in this channel to toggle.", ephemeral=True); # this error message is temporary
+            await interaction.response.send_message("❌ You must have permission to type in this channel to interact with the checklist.", ephemeral=True); # this error message is temporary
             return # exit
         # Toggle the internal state
         self.is_checked = not self.is_checked
