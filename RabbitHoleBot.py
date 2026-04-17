@@ -63,6 +63,36 @@ class ChecklistButton(discord.ui.Button):
             
         # Edit the message to reflect the new button state
         await interaction.response.edit_message(view=self.view)
+        
+        
+#inputs are only accepted from users with write permissions in the channel (for use in announcements channel etc) 
+class ProtectedChecklistButton(discord.ui.Button):
+    def __init__(self, item_name: str):
+        # Start the button as red (danger) with an X
+        super().__init__(style=discord.ButtonStyle.danger, label=item_name, emoji="✖️")
+        self.item_name = item_name
+        self.is_checked = False
+
+    async def callback(self, interaction: discord.Interaction):
+        
+        channel_perms = interaction.channel.permissions_for(interaction.user);
+        #check if user has write permission in the channel
+        if not channel_perms.send_messages:
+            await interaction.response.send_message("❌ You must have permission to type in this channel to unlock the door.", ephemeral=True); # this error message is temporary
+            return # exit
+        # Toggle the internal state
+        self.is_checked = not self.is_checked
+        
+        # Update the button's appearance based on the new state
+        if self.is_checked:
+            self.style = discord.ButtonStyle.success # Turns green
+            self.emoji = "✅"
+        else:
+            self.style = discord.ButtonStyle.danger # Turns red
+            self.emoji = "✖️"
+            
+        # Edit the message to reflect the new button state
+        await interaction.response.edit_message(view=self.view)
 
 class ChecklistView(discord.ui.View):
     def __init__(self, item_list: list):
@@ -71,6 +101,14 @@ class ChecklistView(discord.ui.View):
         # Dynamically create and add a button for every item in the list
         for item in item_list:
             self.add_item(ChecklistButton(item))
+            
+class ProtectedChecklistView(discord.ui.View):
+    def __init__(self, item_list: list):
+        super().__init__(timeout=None) # timeout=None prevents the buttons from dying after 3 minutes
+        
+        # Dynamically create and add a protected button for every item in the list
+        for item in item_list:
+            self.add_item(ProtectedChecklistButton(item))
 
 #========================= Init =========================
 intents = discord.Intents.default();
@@ -86,7 +124,7 @@ client = Client(command_prefix = "!rabbithole", intents = intents);
 async def test(interaction: discord.Interaction):
     await interaction.response.send_message("hur hur hur.");
 
-@client.tree.command(name="checklist", description="Creates an interactive checklist", guild=GUILD_ID)
+@client.tree.command(name="checklist", description="Creates an interactive checklist.", guild=GUILD_ID)
 @app_commands.describe(title="The title of the checklist", items="Comma-separated list of items")
 async def checklistCommand(interaction: discord.Interaction, title: str, items: str):
     
@@ -113,7 +151,31 @@ async def checklistCommand(interaction: discord.Interaction, title: str, items: 
     await interaction.response.send_message(embed=embed, view=view)
 
 
+@client.tree.command(name="protectedchecklist", description="Creates an interactive checklist that only users with write permissions in the channel can interact with.", guild=GUILD_ID)
+@app_commands.describe(title="The title of the checklist", items="Comma-separated list of items")
+async def protectedchecklistCommand(interaction: discord.Interaction, title: str, items: str):
+    
+    # 1. Split the string by commas and strip any accidental extra spaces
+    item_list = [item.strip() for item in items.split(",") if item.strip()]
+    
+    # Discord has a strict limit of 25 buttons per message (5 rows of 5)
+    if len(item_list) > 25:
+        await interaction.response.send_message("❌ You can only have up to 25 items in a checklist! (discord has a limit of 25 buttons per message)", ephemeral=True)
+        return
+    elif len(item_list) == 0:
+        await interaction.response.send_message("❌ You must provide at least one item!", ephemeral=True)
+        return
 
+    # 2. Build a nice embed for the title
+    embed = discord.Embed(
+        title=f"📋 {title}", 
+        description="Click the buttons below to toggle items on and off.",
+        color=discord.Color.blurple()
+    )
+    
+    # 3. Create our dynamic view and send it!
+    view = ProtectedChecklistView(item_list)
+    await interaction.response.send_message(embed=embed, view=view)
 
 
 
